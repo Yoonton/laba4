@@ -109,7 +109,41 @@ public class Car implements Vehicle{
         }
         carModels[ind].setPrice(newPrice);
     }
-
+    @Override
+    public String toString(){
+        StringBuffer strBuffer = new StringBuffer();
+        strBuffer.append(carMark+"\n");
+        for(int i = 0; i < carModels.length; i++){
+            strBuffer.append(carModels[i].getModelName() + " " + carModels[i].getPrice()+ "\n");
+        }
+        return strBuffer.toString();
+    }
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Vehicle) || obj == null){
+            return false;
+        }
+        Vehicle veh = (Vehicle)obj;
+        if(!(veh.getMark().equals(carMark))){
+            return false;
+        }
+        if(veh.getSize() != carModels.length){
+            return false;
+        }
+        String[] vehModels = veh.getAllModelNames();
+        double[] vehPrices = veh.getAllModelPrices();
+        for(int i = 0; i < carModels.length; i++){
+            if(!(vehModels[i].equals(carModels[i].getModelName())) ||
+                (vehPrices[i] != carModels[i].getPrice())){
+                    return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public int hashCode(){
+        return carMark.hashCode() + Arrays.hashCode(carModels);
+    }
 
     
     public class CarModel implements Serializable{
