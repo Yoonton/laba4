@@ -2,6 +2,21 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+    // ⣿⣿⣿⣿⣿⣿⣿⠿⠿⢛⣋⣙⣋⣩⣭⣭⣭⣭⣍⣉⡛⠻⢿⣿⣿⣿⣿ 
+    // ⣿⣿⣿⠟⣋⣥⣴⣾⣿⣿⣿⡆⣿⣿⣿⣿⣿⣿⡿⠟⠛⠗⢦⡙⢿⣿⣿ 
+    // ⣿⡟⡡⠾⠛⠻⢿⣿⣿⣿⡿⠃⣿⡿⣿⠿⠛⠉⠠⠴⢶⡜⣦⡀⡈⢿⣿ 
+    // ⡿⢀⣰⡏⣼⠋⠁⢲⡌⢤⣠⣾⣷⡄⢄⠠⡶⣾⡀⠀⣸⡷⢸⡷⢹⠈⣿ 
+    // ⡇⢘⢿⣇⢻⣤⣠⡼⢃⣤⣾⣿⣿⣿⢌⣷⣅⡘⠻⠿⢛⣡⣿⠀⣾⢠⣿ 
+    // ⣷⠸⣮⣿⣷⣨⣥⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢁⡼⠃⣼⣿ 
+    // ⡟⠛⠛⠛⣿⠛⠛⢻⡟⠛⠛⢿⡟⠛⠛⡿⢻⡿⠛⡛⢻⣿⠛⡟⠛⠛⢿ 
+    // ⡇⢸⣿⠀⣿⠀⠛⢻⡇⠸⠃⢸⡇⠛⢛⡇⠘⠃⢼⣷⡀⠃⣰⡇⠸⠇⢸ 
+    // ⡇⢸⣿⠀⣿⠀⠛⢻⡇⢰⣿⣿⡇⠛⠛⣇⢸⣧⠈⣟⠃⣠⣿⡇⢰⣾⣿ 
+    // ⣿⣿⣿⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢋⣿⠙⣷⢸⣷⠀⣿⣿⣿ 
+    // ⣿⣿⣿⡇⢻⣿⣿⣿⡿⠿⢿⣿⣿⣿⠟⠋⣡⡈⠻⣇⢹⣿⣿⢠⣿⣿⣿ 
+    // ⣿⣿⣿⣿⠘⣿⣿⣿⣿⣯⣽⣉⣿⣟⣛⠷⠙⢿⣷⣌⠀⢿⡇⣼⣿⣿⣿ 
+    // ⣿⣿⣿⡿⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⡙⢿⢗⣀⣁⠈⢻⣿⣿ 
+    // ⣿⡿⢋⣴⣿⣎⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡉⣯⣿⣷⠆⠙⢿ 
+    // ⣏⠀⠈⠧⠡⠉⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠉⢉⣁⣀⣀⣾
 public class Motorbike implements Vehicle {
     private int size = 0;
     private Model head = null;
@@ -208,7 +223,7 @@ public class Motorbike implements Vehicle {
                 return false;
             }
             i++;
-            temp.getNext();
+            temp = temp.getNext();
         }
         return true;
     }
@@ -222,8 +237,25 @@ public class Motorbike implements Vehicle {
         }
         return res;
     }
-
-
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        Motorbike clone = (Motorbike)super.clone();
+        clone.head = new Model();
+        clone.head.setNext(clone.head);
+        clone.head.setPrev(clone.head);
+        Model temp = head.getNext();
+        Model cloneTemp = clone.head.getNext();
+        while(temp != head){
+            Model newModel = new Model(temp.getModelName(), temp.getPrice());
+            newModel.setNext(clone.head);
+            newModel.setPrev(clone.head.getPrev());
+            clone.head.getPrev().setNext(newModel);
+            clone.head.setPrev(newModel);
+            temp = temp.getNext();
+            cloneTemp = cloneTemp.getNext();
+        }
+        return clone;
+    }
 
 
     private class Model implements Serializable {
